@@ -3,7 +3,7 @@
 
 import PackageDescription
 
-let isCrawling = true
+let isCrawling = false
 
 let package = Package(
     name: "JapaneseHoliday",
