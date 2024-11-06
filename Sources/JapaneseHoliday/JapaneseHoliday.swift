@@ -6,7 +6,8 @@ public enum JapaneseHoliday {
 
 public extension JapaneseHoliday {
     static func holiday(year: Int, month: Int, day: Int) -> Holiday? {
-        Holidays[String(format: "%04d-%02d-%02d", year, month, day)]
+        // Holidays[String(format: "%04d-%02d-%02d", year, month, day)]
+        Holidays[year]?[month]?[day]
     }
 
     static func holiday(ofDate date: Date) -> Holiday? {
@@ -31,7 +32,7 @@ public extension JapaneseHoliday {
                 default: 1...31
                 }
                 return dayRange.compactMap { day in
-                    Holidays[String(format: "%04d-%02d-%02d", year, month, day)]
+                    holiday(year: year, month: month, day: day)
                 }
             }
         }

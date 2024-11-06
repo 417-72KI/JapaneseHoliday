@@ -15,12 +15,6 @@ public struct Holiday: Sendable, Codable {
 }
 
 package extension Holiday {
-    var date: String {
-        String(format: "%04d-%02d-%02d", year, month, day)
-    }
-}
-
-package extension Holiday {
     static var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.calendar = .init(identifier: .gregorian)
@@ -43,5 +37,12 @@ package extension Holiday {
         encoder.dateEncodingStrategy = .formatted(dateFormatter)
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         return encoder
+    }
+}
+
+// MARk: CustomStringConvertible
+extension Holiday: CustomStringConvertible {
+    public var description: String {
+        "\(name)(\(year)/\(month)/\(day))"
     }
 }

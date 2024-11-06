@@ -47,7 +47,7 @@ let holidays = try csv.split(separator: "\r\n").lazy.dropFirst()
 let outputFile = sourceDir.appending(path: "Holidays.generated.swift")
 
 let source = HolidayBuilder.build(holidays)
-try Data(source.formatted().description.utf8).write(to: outputFile)
+try Data(source.formatted(using: Format()).description.utf8).write(to: outputFile)
 
 let lastUpdateFile = sourceDir.appending(path: "LastUpdate.swift")
 try rewrite(file: lastUpdateFile, withLastUpdate: Date())
