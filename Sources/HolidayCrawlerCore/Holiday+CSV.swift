@@ -1,7 +1,7 @@
 import Foundation
 import Common
 
-extension Holiday {
+package extension Holiday {
     init(csv: String) throws {
         let strs = csv.split(separator: ",").map(String.init)
         guard strs.count == 2 else {

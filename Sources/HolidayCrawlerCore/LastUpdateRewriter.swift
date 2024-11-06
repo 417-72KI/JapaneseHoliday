@@ -2,7 +2,7 @@ import Foundation
 import SwiftSyntax
 import SwiftParser
 
-func rewrite(file: URL, withLastUpdate lastUpdate: Date) throws {
+package func rewrite(file: URL, withLastUpdate lastUpdate: Date) throws {
     let syntax = Parser.parse(source: String(decoding: try Data(contentsOf: file), as: UTF8.self))
     let rewrited = LastUpdateRewriter(lastUpdate: lastUpdate).visit(syntax)
     try Data(rewrited.formatted().description.utf8).write(to: file)

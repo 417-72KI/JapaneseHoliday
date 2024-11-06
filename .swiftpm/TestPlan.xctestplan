@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "169B3402-A8A8-4CC3-B0E6-2836A49F41C5",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "nsZombieEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "HolidayCrawlerCoreTests",
+        "name" : "HolidayCrawlerCoreTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "JapaneseHolidayTests",
+        "name" : "JapaneseHolidayTests"
+      }
+    }
+  ],
+  "version" : 1
+}

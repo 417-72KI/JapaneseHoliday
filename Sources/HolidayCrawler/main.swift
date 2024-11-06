@@ -5,6 +5,7 @@ import Foundation
 import FoundationNetworking
 #endif
 import Common
+import HolidayCrawlerCore
 
 let url = URL(string: "https://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv")!
 let data = try Data(contentsOf: url)
@@ -45,9 +46,7 @@ let csv = String(decoding: convertedData, as: UTF8.self)
 let holidays = try csv.split(separator: "\r\n").lazy.dropFirst()
     .map(Holiday.init)
 let outputFile = sourceDir.appending(path: "Holidays.generated.swift")
-
-let source = HolidayBuilder.build(holidays)
-try Data(source.formatted(using: Format()).description.utf8).write(to: outputFile)
+try HolidayBuilder.write(holidays, into: outputFile)
 
 let lastUpdateFile = sourceDir.appending(path: "LastUpdate.swift")
 try rewrite(file: lastUpdateFile, withLastUpdate: Date())

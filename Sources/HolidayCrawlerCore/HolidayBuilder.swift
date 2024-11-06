@@ -3,10 +3,17 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 import Common
 
-enum HolidayBuilder {}
+package enum HolidayBuilder {}
+
+package extension HolidayBuilder {
+    static func write(_ holidays: [Holiday], into outputFile: URL) throws {
+        let source = build(holidays)
+        try Data(source.description.utf8).write(to: outputFile)
+    }
+}
 
 extension HolidayBuilder {
-    static func build(_ holidays: [Holiday], flatten: Bool = false) -> any SyntaxProtocol {
+    static func build(_ holidays: [Holiday]) -> Syntax {
         SourceFileSyntax {
             for name in ["Foundation", "Common"] {
                 ImportDeclSyntax(
@@ -15,47 +22,35 @@ extension HolidayBuilder {
                     }
                 )
             }
-            if flatten {
-                VariableDeclSyntax(
-                    leadingTrivia: [.newlines(2)],
-                    modifiers: [
-                        // DeclModifierSyntax(name: .keyword(.public))
-                    ],
-                    .let,
-                    name: PatternSyntax(IdentifierPatternSyntax(identifier: .identifier("Holidays"))),
-                    type: TypeAnnotationSyntax(type: DictionaryTypeSyntax(key: TypeSyntax("String"), value: TypeSyntax("Holiday"))),
-                    initializer: InitializerClauseSyntax(value: dictionary(holidays))
-                )
-            } else {
-                VariableDeclSyntax(
-                    leadingTrivia: [.newlines(2)],
-                    modifiers: [
-                        // DeclModifierSyntax(name: .keyword(.public))
-                    ],
-                    .let,
-                    name: PatternSyntax(IdentifierPatternSyntax(identifier: .identifier("Holidays"))),
-                    type: TypeAnnotationSyntax(
-                        type: DictionaryTypeSyntax(
+            VariableDeclSyntax(
+                leadingTrivia: [.newlines(2)],
+                modifiers: [
+                    // DeclModifierSyntax(name: .keyword(.public))
+                ],
+                .let,
+                name: PatternSyntax(IdentifierPatternSyntax(identifier: .identifier("Holidays"))),
+                type: TypeAnnotationSyntax(
+                    type: DictionaryTypeSyntax(
+                        key: TypeSyntax("Int"),
+                        value: DictionaryTypeSyntax(
                             key: TypeSyntax("Int"),
                             value: DictionaryTypeSyntax(
                                 key: TypeSyntax("Int"),
-                                value: DictionaryTypeSyntax(
-                                    key: TypeSyntax("Int"),
-                                    value: TypeSyntax("Holiday")
-                                )
+                                value: TypeSyntax("Holiday")
                             )
                         )
-                    ),
-                    initializer: InitializerClauseSyntax(value: dictionary(Dictionary(grouping: holidays, by: \.year)))
-                )
-            }
+                    )
+                ),
+                initializer: InitializerClauseSyntax(value: dictionary(Dictionary(grouping: holidays, by: \.year)))
+            )
         }
+        .formatted(using: Format())
     }
 }
 
 private extension HolidayBuilder {
     static func dictionary(_ holidaysByYear: [Int: [Holiday]]) -> some ExprSyntaxProtocol {
-        DictionaryExprSyntax(rightSquare: .rightSquareToken(leadingTrivia: .newline)) {
+        DictionaryExprSyntax(rightSquare: .rightSquareToken(leadingTrivia: holidaysByYear.isEmpty ? [] : .newline)) {
             DictionaryElementListSyntax {
                 for year in holidaysByYear.keys.sorted() {
                     DictionaryElementSyntax(
@@ -95,36 +90,7 @@ private extension HolidayBuilder {
             }
         }
     }
-}
 
-private extension HolidayBuilder {
-    static func dictionary(_ holidays: [Holiday]) -> some ExprSyntaxProtocol {
-        DictionaryExprSyntax(rightSquare: .rightSquareToken(leadingTrivia: .newline)) {
-            DictionaryElementListSyntax { holidays.map(dictonaryElement(_:)) }
-        }
-    }
-
-    static func dictonaryElement(_ holiday: Holiday) -> DictionaryElementSyntax {
-        DictionaryElementSyntax(
-            leadingTrivia: .newline,
-            key: StringLiteralExprSyntax(
-                openingQuote: .stringQuoteToken(),
-                segments: [
-                    .stringSegment(
-                        StringSegmentSyntax(
-                            content: .identifier(holiday.date),
-                            trailingTrivia: [.spaces(0)]
-                        )
-                    )
-                ],
-                closingQuote: .stringQuoteToken()
-            ),
-            value: element(holiday)
-        )
-    }
-}
-
-private extension HolidayBuilder {
     static func element(_ holiday: Holiday) -> some ExprSyntaxProtocol {
         FunctionCallExprSyntax(callee: DeclReferenceExprSyntax(baseName: .identifier("Holiday"))) {
             LabeledExprSyntax(
