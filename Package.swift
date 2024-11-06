@@ -7,7 +7,7 @@ let isCrawling = true
 
 let package = Package(
     name: "JapaneseHoliday",
-    platforms: [.macOS(.v14), .iOS(.v16)],
+    platforms: [.macOS(.v14), .iOS(.v16), .tvOS(.v16), .watchOS(.v9)],
     products: [
         .library(
             name: "JapaneseHoliday",
