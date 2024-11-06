@@ -1,7 +1,7 @@
 import Foundation
 import Common
 
-let holidays: [String: Holiday] = [
+let Holidays: [String: Holiday] = [
     "1955-01-01": Holiday(year: 1955, month: 1, day: 1, name: "元日"),
     "1955-01-15": Holiday(year: 1955, month: 1, day: 15, name: "成人の日"),
     "1955-03-21": Holiday(year: 1955, month: 3, day: 21, name: "春分の日"),
