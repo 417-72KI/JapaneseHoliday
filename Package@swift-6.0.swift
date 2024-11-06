@@ -5,6 +5,14 @@ import PackageDescription
 
 let isCrawling = true
 
+let isApplePlatform: Bool = {
+    #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+    return true
+    #else
+    return false
+    #endif
+}()
+
 let package = Package(
     name: "JapaneseHoliday",
     platforms: [.macOS(.v14), .iOS(.v16), .tvOS(.v16), .watchOS(.v9)],
@@ -24,7 +32,8 @@ let package = Package(
             name: "JapaneseHolidayTests",
             dependencies: ["JapaneseHoliday"]
         ),
-    ]
+    ],
+    swiftLanguageModes: [.v6]
 )
 
 if isCrawling {
@@ -55,6 +64,16 @@ if isCrawling {
             )
         ]
     )
+    if isApplePlatform {
+        package.dependencies.append(contentsOf: [
+            .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", from: "0.57.0"),
+        ])
+        package.targets.forEach {
+            $0.dependencies.append(contentsOf: [
+                .product(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins"),
+            ])
+        }
+    }
 }
 
 // MARK: - Upcoming feature flags for Swift 7

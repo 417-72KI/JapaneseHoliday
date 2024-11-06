@@ -3,6 +3,7 @@ included:
 excluded:
   - '**/*.generated.swift'
   - Tests
+allow_zero_lintable_files: true
 opt_in_rules: [all]
 disabled_rules:
   - conditional_returns_on_newline
