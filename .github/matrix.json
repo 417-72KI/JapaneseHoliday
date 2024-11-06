@@ -10,7 +10,6 @@
     ],
     "platform": [
         "platform=macOS",
-        "platform=macOS,variant=Mac Catalyst",
         "platform=iOS Simulator,name=iPhone 15 Pro",
         "platform=tvOS Simulator,name=Apple TV 4K (3rd generation)",
         "platform=watchOS Simulator,name=Apple Watch Series 9 (45mm)"
