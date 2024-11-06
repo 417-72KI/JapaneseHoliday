@@ -30,7 +30,7 @@ jobs:
   test-macos:
     name: Test
     needs: extract-matrix
-    runs-on: macos-13
+    runs-on: macos-14
     concurrency: 
       group: ${{ github.head_ref }}-${{ github.workflow }}-${{ matrix.xcode }}-${{ matrix.destination }}
       cancel-in-progress: true
@@ -59,7 +59,7 @@ jobs:
           set -o pipefail && \
           xcrun xcodebuild \
             -enableCodeCoverage YES \
-            -scheme "$(xcodebuild -list -json | jq -rc '.workspace.schemes[0]')" \
+            -scheme "$(xcodebuild -list -json | jq -rc '.workspace.name')" \
             -destination "${{ matrix.destination }}" \
             -derivedDataPath '.build' \
             -resultBundlePath 'test_output/TestResult.xcresult' \
@@ -75,7 +75,7 @@ jobs:
   xcodebuild_result:
     name: Export xcodebuild test result
     needs: test-macos
-    runs-on: macOS-13
+    runs-on: macOS-14
     steps:
       - uses: actions/download-artifact@v3
         with:
