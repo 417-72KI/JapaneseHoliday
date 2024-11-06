@@ -40,7 +40,11 @@ public extension JapaneseHoliday {
 }
 
 private extension JapaneseHoliday {
-    static let calendar = Calendar(identifier: .gregorian)
+    static let calendar = {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "Asia/Tokyo")!
+        return cal
+    }()
 }
 
 private extension JapaneseHoliday {
