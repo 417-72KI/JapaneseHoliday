@@ -1,0 +1,57 @@
+included:
+  - Sources
+excluded:
+  - Tests
+opt_in_rules: [all]
+disabled_rules:
+  - conditional_returns_on_newline
+  - explicit_acl
+  - explicit_enum_raw_value
+  - explicit_top_level_acl
+  - explicit_type_interface
+  - extension_access_modifier
+  - file_header
+  - file_name
+  - file_types_order
+  - function_default_parameter_at_end
+  - lower_acl_than_parent
+  - missing_docs
+  - no_extension_access_modifier
+  - no_grouping_extension
+  - object_literal
+  - prefixed_toplevel_constant
+  - prohibited_interface_builder
+  - required_deinit
+  - strict_fileprivate
+  - strong_iboutlet
+  - switch_case_on_newline
+  - unowned_variable_capture
+  - unused_optional_binding
+  - vertical_whitespace_between_cases
+line_length:
+  warning: 180
+  ignores_urls: true
+  ignores_function_declarations: true
+  ignores_comments: true
+  ignores_interpolated_strings: true
+file_length:
+  ignore_comment_only_lines: true
+cyclomatic_complexity:
+  ignores_case_statements: true
+explicit_type_interface:
+  allow_redundancy: true
+  excluded:
+    - local
+nesting:
+  type_level: 2
+attributes:
+  always_on_same_line: 
+    - '@IBAction'
+    - '@NSManaged'
+    - '@objc'
+multiline_arguments:
+  only_enforce_after_first_closure_on_first_line: true
+number_separator:
+  minimum_length: 5
+trailing_closure:
+  only_single_muted_parameter: true

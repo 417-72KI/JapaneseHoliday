@@ -1,0 +1,18 @@
+{
+    "xcode_version": [
+        "14.2",
+        "14.3.1",
+        "15.0.1"
+    ],
+    "swift_version": [
+        "5.7",
+        "5.8",
+        "5.9"
+    ],
+    "platform": [
+        "platform=macOS",
+        "platform=macOS,variant=Mac Catalyst",
+        "platform=iOS Simulator,name=iPhone 14 Pro",
+        "platform=tvOS Simulator,name=Apple TV 4K (3rd generation)"
+    ]
+}

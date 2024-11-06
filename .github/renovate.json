@@ -1,0 +1,6 @@
+{
+  "extends": [
+    "github>417-72KI/renovate-config"
+  ]
+}
+  
