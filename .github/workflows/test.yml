@@ -53,6 +53,10 @@ jobs:
           key: ${{ runner.os }}-xcode-${{ matrix.xcode }}-${{ steps.create-destination-key.outputs.destination-key }}-${{ hashFiles('Package.swift') }}
           restore-keys: |
             ${{ runner.os }}-xcode-${{ matrix.xcode }}-${{ steps.create-destination-key.outputs.destination-key }}-
+      - name: Enable macro and plugin
+        run: |
+          defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+          defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
       - name: test
         run: |
           defaults write com.apple.dt.XCBuild EnableSwiftBuildSystemIntegration 1
