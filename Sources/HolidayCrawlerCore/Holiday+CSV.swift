@@ -7,12 +7,12 @@ package extension Holiday {
         guard strs.count == 2 else {
             throw ConvertError.invalidCSV(csv)
         }
-        let df = Self.dateFormatter
-        guard let date = df.date(from: strs[0]) else {
-            throw ConvertError.invalidFormat(df, strs[0])
+        let dateFormatter = Self.dateFormatter
+        guard let date = dateFormatter.date(from: strs[0]) else {
+            throw ConvertError.invalidFormat(dateFormatter, strs[0])
         }
         var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = df.timeZone
+        cal.timeZone = dateFormatter.timeZone
         let year = cal.component(.year, from: date)
         let month = cal.component(.month, from: date)
         let day = cal.component(.day, from: date)
