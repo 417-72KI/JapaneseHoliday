@@ -89,3 +89,70 @@ func holidaysInClosedRange(_ range: ClosedRange<TimeInterval>, _ expected: Int) 
     let holidays = JapaneseHoliday.holidays(in: range)
     #expect(holidays.count == expected)
 }
+
+@MainActor @Test
+func customHoliday() async throws {
+    defer { JapaneseHoliday.customHolidays.removeAll() }
+    let range = Date(timeIntervalSince1970: 1735657200)..<Date(timeIntervalSince1970: 1735916400) // 2025/1/1 - 2025/1/4
+    #expect(JapaneseHoliday.customHolidays.isEmpty)
+    #expect(JapaneseHoliday.holidays(in: range).count == 1)
+    JapaneseHoliday.addCustomHoliday(forYear: 2025, month: 1, day: 2, named: "三が日")
+    JapaneseHoliday.addCustomHoliday(forYear: 2025, month: 1, day: 3, named: "三が日")
+    do {
+        let holiday = try #require(JapaneseHoliday.customHolidays[2025]?[1]?[2])
+        #expect(holiday.year == 2025)
+        #expect(holiday.month == 1)
+        #expect(holiday.day == 2)
+        #expect(holiday.name == "三が日")
+    }
+    do {
+        let holiday = try #require(JapaneseHoliday.customHolidays[2025]?[1]?[3])
+        #expect(holiday.year == 2025)
+        #expect(holiday.month == 1)
+        #expect(holiday.day == 3)
+        #expect(holiday.name == "三が日")
+    }
+    #expect(JapaneseHoliday.holidays(in: range).count == 3)
+}
+
+@MainActor @Test
+func customHolidayForEveryYears() async throws {
+    defer { JapaneseHoliday.customHolidays.removeAll() }
+    #expect(JapaneseHoliday.customHolidays.isEmpty)
+
+    let cal = Calendar(identifier: .gregorian)
+    let years = (1955...2015)
+    let yearsForNewYearsSunday = [1978, 1984, 1989, 1995, 2006, 2012]
+    years.forEach { year in
+        let start = DateComponents(calendar: cal, year: year, month: 1, day: 1, hour: 0, minute: 0, second: 0, nanosecond: 0).date!
+        let end = DateComponents(calendar: cal, year: year, month: 1, day: 4, hour: 0, minute: 0, second: 0, nanosecond: 0).date!
+        if yearsForNewYearsSunday.contains(year) {
+            #expect(JapaneseHoliday.holidays(in: start..<end).count == 2, "year: \(year)")
+        } else {
+            #expect(JapaneseHoliday.holidays(in: start..<end).count == 1, "year: \(year)")
+        }
+    }
+    JapaneseHoliday.addCustomHoliday(forMonth: 1, day: 2, named: "三が日")
+    JapaneseHoliday.addCustomHoliday(forMonth: 1, day: 3, named: "三が日")
+    try years.forEach { year in
+        do {
+            let holiday = try #require(JapaneseHoliday.customHolidays[year]?[1]?[2])
+            #expect(holiday.year == year)
+            #expect(holiday.month == 1)
+            #expect(holiday.day == 2)
+            #expect(holiday.name == "三が日")
+        }
+        do {
+            let holiday = try #require(JapaneseHoliday.customHolidays[year]?[1]?[3])
+            #expect(holiday.year == year)
+            #expect(holiday.month == 1)
+            #expect(holiday.day == 3)
+            #expect(holiday.name == "三が日")
+        }
+    }
+    years.forEach { year in
+        let start = DateComponents(calendar: cal, year: year, month: 1, day: 1, hour: 0, minute: 0, second: 0, nanosecond: 0).date!
+        let end = DateComponents(calendar: cal, year: year, month: 1, day: 4, hour: 0, minute: 0, second: 0, nanosecond: 0).date!
+        #expect(JapaneseHoliday.holidays(in: start..<end).count == 3)
+    }
+}

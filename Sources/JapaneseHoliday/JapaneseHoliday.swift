@@ -2,6 +2,7 @@ import Foundation
 import Common
 
 public enum JapaneseHoliday {
+    @MainActor static var customHolidays: [Int: [Int: [Int: Holiday]]] = [:]
 }
 
 public extension JapaneseHoliday {
@@ -37,6 +38,35 @@ public extension JapaneseHoliday {
             }
         }
         return holidays
+    }
+}
+
+public extension JapaneseHoliday {
+    @MainActor
+    static func addCustomHoliday(forYear year: Int, month: Int, day: Int, named name: String) {
+        let holiday = Holiday(year: year, month: month, day: day, name: name)
+        if customHolidays[year] == nil {
+            customHolidays[year] = [:]
+        }
+        if customHolidays[year]?[month] == nil {
+            customHolidays[year]?[month] = [:]
+        }
+        customHolidays[year]?[month]?[day] = holiday
+    }
+
+    @MainActor
+    static func addCustomHoliday(forMonth month: Int, day: Int, named name: String) {
+        Holidays.keys.forEach { year in
+            addCustomHoliday(forYear: year, month: month, day: day, named: name)
+        }
+    }
+}
+
+public extension JapaneseHoliday {
+    @MainActor
+    static func appendCustomHoliday(forDate date: Date, named name: String) {
+        let (year, month, day) = ymdComponents(from: date)
+        addCustomHoliday(forYear: year, month: month, day: day, named: name)
     }
 }
 
