@@ -6,7 +6,6 @@ public enum JapaneseHoliday {
 
 public extension JapaneseHoliday {
     static func holiday(year: Int, month: Int, day: Int) -> Holiday? {
-        // Holidays[String(format: "%04d-%02d-%02d", year, month, day)]
         Holidays[year]?[month]?[day]
     }
 
