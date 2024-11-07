@@ -28,12 +28,14 @@ public extension JapaneseHoliday {
         let end = ymdComponents(from: end)
         return (start.year...end.year).flatMap { year in
             let monthRange = switch year {
+            case start.year where start.year == end.year: (start.month...end.month)
             case start.year: (start.month...12)
             case end.year: (1...end.month)
             default: (1...12)
             }
             return monthRange.flatMap { month in
                 let dayRange = switch month {
+                case start.month where year == start.year && year == end.year && start.month == end.month: (start.day...end.day)
                 case start.month where year == start.year: (start.day...31)
                 case end.month where year == end.year: (1...end.day)
                 default: 1...31
