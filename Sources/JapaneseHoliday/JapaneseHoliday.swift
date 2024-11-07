@@ -3,6 +3,7 @@ import Common
 
 /// A main utility for calculating Japanese holidays.
 public enum JapaneseHoliday {
+    @MainActor static var customHolidays: [Int: [Int: [Int: Holiday]]] = [:]
 }
 
 public extension JapaneseHoliday {
@@ -43,6 +44,45 @@ public extension JapaneseHoliday {
             }
         }
         return holidays
+    }
+}
+
+public extension JapaneseHoliday {
+    /// Add a day that are not required by law but you want to treat as holidays.
+    /// e.g. 1/2, 1/3
+    ///
+    /// If the added day is conflicted with exising holiday, it will be ignored.
+    @MainActor
+    static func addCustomHoliday(forYear year: Int, month: Int, day: Int, named name: String) {
+        let holiday = Holiday(year: year, month: month, day: day, name: name)
+        if customHolidays[year] == nil {
+            customHolidays[year] = [:]
+        }
+        if customHolidays[year]?[month] == nil {
+            customHolidays[year]?[month] = [:]
+        }
+        customHolidays[year]?[month]?[day] = holiday
+    }
+
+    /// Add a day that are not required by law but you want to treat as holidays.
+    /// e.g. 1/2, 1/3
+    ///
+    /// If the added day is conflicted with exising holiday, it will be ignored.
+    @MainActor
+    static func addCustomHoliday(forMonth month: Int, day: Int, named name: String) {
+        Holidays.keys.forEach { year in
+            addCustomHoliday(forYear: year, month: month, day: day, named: name)
+        }
+    }
+
+    /// Add a day that are not required by law but you want to treat as holidays.
+    /// e.g. 1/2, 1/3
+    ///
+    /// If the added day is conflicted with exising holiday, it will be ignored.
+    @MainActor
+    static func addCustomHoliday(forDate date: Date, named name: String) {
+        let (year, month, day) = ymdComponents(from: date)
+        addCustomHoliday(forYear: year, month: month, day: day, named: name)
     }
 }
 
