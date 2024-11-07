@@ -11,3 +11,32 @@ A library for calculating Japanese holidays.
 It crawls [the official website of the Japanese government](https://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv) and extracts the data of the holidays.
 
 See also https://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html
+
+## Installation
+
+Set
+
+```swift
+.package(url: "https://github.com/417-72KI/JapaneseHoliday.git", from: "1.0.0"),
+```
+
+in package dependencies and
+
+```swift
+"JapaneseHoliday",
+```
+
+in target dependencies.
+
+## Usage
+
+```swift
+import JapaneseHoliday
+
+let holiday = JapaneseHoliday.holiday(ofDate: .now)
+
+print("Today is \(holiday?.name ?? "not a holiday")")
+```
+
+## Author
+[417-72KI](https://github.com/417-72KI)
