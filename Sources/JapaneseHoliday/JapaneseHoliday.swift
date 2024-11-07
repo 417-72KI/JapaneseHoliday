@@ -15,7 +15,10 @@ public extension JapaneseHoliday {
     }
 
     static func holidays(in range: Range<Date>) -> [Holiday] {
-        holidays(between: range.lowerBound, and: range.upperBound.advanced(by: -86400))
+        holidays(
+            between: range.lowerBound,
+            and: range.upperBound.advanced(by: max(range.distance, -86400))
+        )
     }
 
     static func holidays(in range: ClosedRange<Date>) -> [Holiday] {
@@ -24,27 +27,16 @@ public extension JapaneseHoliday {
 
     static func holidays(between start: Date, and end: Date) -> [Holiday] {
         precondition(start <= end)
-        let start = ymdComponents(from: start)
-        let end = ymdComponents(from: end)
-        return (start.year...end.year).flatMap { year in
-            let monthRange = switch year {
-            case start.year where start.year == end.year: (start.month...end.month)
-            case start.year: (start.month...12)
-            case end.year: (1...end.month)
-            default: (1...12)
-            }
-            return monthRange.flatMap { month in
-                let dayRange = switch month {
-                case start.month where year == start.year && year == end.year && start.month == end.month: (start.day...end.day)
-                case start.month where year == start.year: (start.day...31)
-                case end.month where year == end.year: (1...end.day)
-                default: 1...31
-                }
-                return dayRange.compactMap { day in
-                    holiday(year: year, month: month, day: day)
-                }
+        var date = start.midnight
+        var holidays = [Holiday]()
+        while date <= end {
+            defer { date = date.nextDay }
+            let (year, month, day) = ymdComponents(from: date)
+            if let holiday = holiday(year: year, month: month, day: day) {
+                holidays.append(holiday)
             }
         }
+        return holidays
     }
 }
 
