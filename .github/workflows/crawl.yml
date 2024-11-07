@@ -1,0 +1,74 @@
+name: Crawl
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/crawl.yml
+      - Sources/HolidayCrawler/*.swift
+  schedule:
+    - cron: 0 0 * * *
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.head_ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+jobs:
+  calculate-now:
+    name: Detect current day of month
+    runs-on: ubuntu-latest
+    outputs:
+      day-of-month: ${{ steps.set.outputs.day-of-month }}
+    steps:
+      - name: Set current day of month as env variable
+        id: set
+        env:
+          TZ: 'Asia/Tokyo'
+        run: echo "day-of-month=$(date +'%-d')" >> $GITHUB_OUTPUT
+      - name: Show day of month
+        run: echo ${{ steps.set.outputs.day-of-month }}
+  update:
+    name: Update holidays
+    needs: calculate-now
+    if: ${{ (github.event_name == 'schedule' && needs.calculate-now.outputs.day-of-month == '1') || github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'event:${{ github.event_name }}'
+      - name: Create token for GitHub App
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+      - name: Set token to env
+        run: echo GH_TOKEN=${{ steps.app-token.outputs.token }} >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ env.GH_TOKEN }}
+      - name: Extract Swift version
+        id: swift-version
+        run: |
+          echo "swift-version=$(cat .github/matrix.json | jq -r '.swift_version | max')" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .build/artifacts
+            .build/checkouts
+            .build/repositories
+          key: ${{ runner.os }}-swift-${{ steps.swift-version.outputs.swift-version }}-${{ hashFiles('Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-swift-${{ steps.swift-version.outputs.swift-version }}-
+            ${{ runner.os }}-swift-
+            ${{ runner.os }}-
+      - name: Run Crawler
+        run: docker run --rm -v $PWD:/work -w /work -t swift:${{ steps.swift-version.outputs.swift-version }} swift run
+      - name: Verify changes
+        run: git status
+      - name: Commit changes
+        if: ${{ github.ref_name == 'main' }}
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add Sources/JapaneseHoliday/*.swift
+          git commit -m 'Update information of holidays'
+          git push origin HEAD
