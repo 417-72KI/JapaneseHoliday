@@ -34,4 +34,3 @@ private final class LastUpdateRewriter: SyntaxRewriter {
         return super.visit(node)
     }
 }
-

@@ -3,8 +3,6 @@
 
 import PackageDescription
 
-let isCrawling = true
-
 let package = Package(
     name: "JapaneseHoliday",
     platforms: [.macOS(.v14), .iOS(.v16), .tvOS(.v16), .watchOS(.v9)],
@@ -27,35 +25,17 @@ let package = Package(
     ]
 )
 
-if isCrawling {
-    package.dependencies.append(contentsOf: [
-        .package(url: "https://github.com/swiftlang/swift-syntax.git", exact: "600.0.1"),
+#if compiler(<6.0)
+package.dependencies.append(contentsOf: [
+    .package(url: "https://github.com/swiftlang/swift-testing.git", from: "0.10.0"),
+])
+
+package.targets.filter(\.isTest).forEach {
+    $0.dependencies.append(contentsOf: [
+        .product(name: "Testing", package: "swift-testing"),
     ])
-    package.products.append(contentsOf: [
-        .executable(name: "holiday-crawler", targets: ["HolidayCrawler"]),
-    ])
-    package.targets.append(
-        contentsOf: [
-            .executableTarget(
-                name: "HolidayCrawler",
-                dependencies: ["HolidayCrawlerCore"]
-            ),
-            .target(
-                name: "HolidayCrawlerCore",
-                dependencies: [
-                    "Common",
-                    .product(name: "SwiftSyntax", package: "swift-syntax"),
-                               .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
-                    .product(name: "SwiftParser", package: "swift-syntax"),
-                ]
-            ),
-            .testTarget(
-                name: "HolidayCrawlerCoreTests",
-                dependencies: ["HolidayCrawlerCore"]
-            )
-        ]
-    )
 }
+#endif
 
 // MARK: - Upcoming feature flags for Swift 6
 package.targets.forEach {
