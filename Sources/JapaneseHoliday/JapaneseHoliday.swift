@@ -14,6 +14,14 @@ public extension JapaneseHoliday {
         return holiday(year: year, month: month, day: day)
     }
 
+    static func holidays(in range: Range<Date>) -> [Holiday] {
+        holidays(between: range.lowerBound, and: range.upperBound.advanced(by: -86400))
+    }
+
+    static func holidays(in range: ClosedRange<Date>) -> [Holiday] {
+        holidays(between: range.lowerBound, and: range.upperBound)
+    }
+
     static func holidays(between start: Date, and end: Date) -> [Holiday] {
         precondition(start <= end)
         let start = ymdComponents(from: start)

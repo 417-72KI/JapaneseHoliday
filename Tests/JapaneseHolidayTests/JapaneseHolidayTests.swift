@@ -44,3 +44,34 @@ func holidayOfDate(_ timeInterval: TimeInterval, _ expected: Bool) async throws 
     let holiday = JapaneseHoliday.holiday(ofDate: .init(timeIntervalSince1970: timeInterval))
     #expect((holiday != nil) == expected)
 }
+
+@Test(arguments: [
+    (1704034800, 1735657199, 21), // 2024/1/1 - 2024/12/31
+    (1735657200, 1767193199, 19), // 2025/1/1 - 2025/12/31
+])
+func holidaysBetween(_ start: TimeInterval, _ end: TimeInterval, _ expected: Int) async throws {
+    let start = Date(timeIntervalSince1970: start)
+    let end = Date(timeIntervalSince1970: end)
+    let holidays = JapaneseHoliday.holidays(between: start, and: end)
+    #expect(holidays.count == expected)
+}
+
+@Test(arguments: [
+    (1704034800..<1735657200, 21), // 2024/1/1 ..< 2025/1/1
+    (1735657200..<1767193200, 19), // 2025/1/1 ..< 2026/1/1
+])
+func holidaysInRange(_ range: Range<TimeInterval>, _ expected: Int) async throws {
+    let range = Date(timeIntervalSince1970: range.lowerBound)..<Date(timeIntervalSince1970: range.upperBound)
+    let holidays = JapaneseHoliday.holidays(in: range)
+    #expect(holidays.count == expected)
+}
+
+@Test(arguments: [
+    (1704034800...1735657200, 22), // 2024/1/1 ... 2025/1/1
+    (1735657200...1767193200, 19), // 2025/1/1 ... 2026/1/1 (No data in 2026)
+])
+func holidaysInClosedRange(_ range: ClosedRange<TimeInterval>, _ expected: Int) async throws {
+    let range = Date(timeIntervalSince1970: range.lowerBound)...Date(timeIntervalSince1970: range.upperBound)
+    let holidays = JapaneseHoliday.holidays(in: range)
+    #expect(holidays.count == expected)
+}
