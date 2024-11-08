@@ -34,7 +34,7 @@ func notHoliday(_ year: Int, _ month: Int, _ days: ClosedRange<Int>) async throw
 }
 
 @Test(arguments: [
-    (1735570800, false),     // 2024/12/31
+    (1735570800, false),    // 2024/12/31
     (1735657200, true),     // 2025/1/1
     (1735743600, false),    // 2025/1/2
     (1735830000, false),    // 2025/1/3
@@ -47,6 +47,10 @@ func holidayOfDate(_ timeInterval: TimeInterval, _ expected: Bool) async throws 
 
 @Test(arguments: [
     (1704034800, 1735657199, 21), // 2024/1/1 - 2024/12/31
+    (1704034800, 1735657200, 22), // 2024/1/1 - 2025/1/1
+    (1735657200, 1735916400, 1),  // 2025/1/1 - 2025/1/4
+    (1735657200, 1738335600, 2),  // 2025/1/1 - 2025/2/1
+    (1714662000, 1714921200, 4),  // 2025/5/3 - 2025/5/6
     (1735657200, 1767193199, 19), // 2025/1/1 - 2025/12/31
 ])
 func holidaysBetween(_ start: TimeInterval, _ end: TimeInterval, _ expected: Int) async throws {
@@ -58,7 +62,12 @@ func holidaysBetween(_ start: TimeInterval, _ end: TimeInterval, _ expected: Int
 
 @Test(arguments: [
     (1704034800..<1735657200, 21), // 2024/1/1 ..< 2025/1/1
+    (1735657200..<1735916400, 1),  // 2025/1/1 ..< 2025/1/4
+    (1735657200..<1738335600, 2),  // 2025/1/1 ..< 2025/2/1
+    (1714662000..<1714921200, 3),  // 2025/5/3 ..< 2025/5/6
     (1735657200..<1767193200, 19), // 2025/1/1 ..< 2026/1/1
+
+    (1735657300..<1735657400, 1),  // 2025/1/1 00:01:40 ..< 2025/1/1 00:03:20
 ])
 func holidaysInRange(_ range: Range<TimeInterval>, _ expected: Int) async throws {
     let range = Date(timeIntervalSince1970: range.lowerBound)..<Date(timeIntervalSince1970: range.upperBound)
@@ -68,7 +77,12 @@ func holidaysInRange(_ range: Range<TimeInterval>, _ expected: Int) async throws
 
 @Test(arguments: [
     (1704034800...1735657200, 22), // 2024/1/1 ... 2025/1/1
+    (1735657200...1735916400, 1),  // 2025/1/1 ... 2025/1/4
+    (1735657200...1738335600, 2),  // 2025/1/1 ... 2025/2/1
+    (1714662000...1714921200, 4),  // 2025/5/3 ... 2025/5/6
     (1735657200...1767193200, 19), // 2025/1/1 ... 2026/1/1 (No data in 2026)
+
+    (1735657300...1735657400, 1),  // 2025/1/1 00:01:40 ... 2025/1/1 00:03:20
 ])
 func holidaysInClosedRange(_ range: ClosedRange<TimeInterval>, _ expected: Int) async throws {
     let range = Date(timeIntervalSince1970: range.lowerBound)...Date(timeIntervalSince1970: range.upperBound)
