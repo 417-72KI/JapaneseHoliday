@@ -1,19 +1,23 @@
 import Foundation
 import Common
 
+/// A main utility for calculating Japanese holidays.
 public enum JapaneseHoliday {
 }
 
 public extension JapaneseHoliday {
+    /// Returns a holiday corresponding to the date, or nil if it is not a holiday.
     static func holiday(year: Int, month: Int, day: Int) -> Holiday? {
         Holidays[year]?[month]?[day]
     }
 
+    /// Returns a holiday corresponding to the date, or nil if it is not a holiday.
     static func holiday(ofDate date: Date) -> Holiday? {
         let (year, month, day) = ymdComponents(from: date)
         return holiday(year: year, month: month, day: day)
     }
 
+    /// Returns an array of holidays including in the range.
     static func holidays(in range: Range<Date>) -> [Holiday] {
         holidays(
             between: range.lowerBound,
@@ -21,10 +25,12 @@ public extension JapaneseHoliday {
         )
     }
 
+    /// Returns an array of holidays including in the range.
     static func holidays(in range: ClosedRange<Date>) -> [Holiday] {
         holidays(between: range.lowerBound, and: range.upperBound)
     }
 
+    /// Returns an array of holidays including in the range from `start` to `end`.
     static func holidays(between start: Date, and end: Date) -> [Holiday] {
         precondition(start <= end)
         var date = start.midnight
