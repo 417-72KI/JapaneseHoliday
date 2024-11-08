@@ -3,13 +3,13 @@ import Common
 
 /// A main utility for calculating Japanese holidays.
 public enum JapaneseHoliday {
-    @MainActor static var customHolidays: [Int: [Int: [Int: Holiday]]] = [:]
+    nonisolated(unsafe) static var customHolidays: [Int: [Int: [Int: Holiday]]] = [:]
 }
 
 public extension JapaneseHoliday {
     /// Returns a holiday corresponding to the date, or nil if it is not a holiday.
     static func holiday(year: Int, month: Int, day: Int) -> Holiday? {
-        Holidays[year]?[month]?[day]
+        Holidays[year]?[month]?[day] ?? customHolidays[year]?[month]?[day]
     }
 
     /// Returns a holiday corresponding to the date, or nil if it is not a holiday.
