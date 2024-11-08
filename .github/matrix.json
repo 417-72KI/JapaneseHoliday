@@ -1,8 +1,17 @@
 {
-    "xcode_version": [
-        "15.4",
-        "16.0",
-        "16.1"
+    "macos_runner_and_xcode": [
+        {
+            "macos_runner": 14,
+            "xcode_version": "15.4"
+        },
+        {
+            "macos_runner": 15,
+            "xcode_version": "16.0"
+        },
+        {
+            "macos_runner": 15,
+            "xcode_version": "16.1"
+        }
     ],
     "swift_version": [
         "5.10",
