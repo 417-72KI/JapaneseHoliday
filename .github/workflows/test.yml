@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v4
       - id: extract-matrix
         run: |
-          echo "versions=$(cat .github/matrix.json | jq -rc '.versions')" >> $GITHUB_OUTPUT
+          echo "versions=$(cat .github/matrix.json | jq -rc '.versions | map(.macos_runner as $macos_runner | .xcode as $xcode | .destination | map({ macos_runner: $macos_runner, xcode: $xcode, destination: . })) | flatten')" >> $GITHUB_OUTPUT
           echo "latest-macos-runner=$(cat .github/matrix.json | jq -rc '.versions | map(.macos_runner) | max')" >> $GITHUB_OUTPUT
           echo "latest-xcode-version=$(cat .github/matrix.json | jq -r '.versions | map(.xcode) | max')" >> $GITHUB_OUTPUT
           echo "swift-versions=$(cat .github/matrix.json | jq -rc '.swift_version')" >> $GITHUB_OUTPUT
