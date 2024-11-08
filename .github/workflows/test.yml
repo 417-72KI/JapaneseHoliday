@@ -15,7 +15,7 @@ jobs:
     name: Create matrix
     runs-on: ubuntu-latest
     outputs:
-      macos-runner-and-xcode: ${{ steps.extract-matrix.outputs.macos-runner-and-xcode }}
+      versions: ${{ steps.extract-matrix.outputs.versions }}
       latest-macos-runner: ${{ steps.extract-matrix.outputs.latest-macos-runner }}
       latest-xcode-version: ${{ steps.extract-matrix.outputs.latest-xcode-version }}
       swift-versions: ${{ steps.extract-matrix.outputs.swift-versions }}
@@ -24,18 +24,16 @@ jobs:
       - uses: actions/checkout@v4
       - id: extract-matrix
         run: |
-          echo "macos-runner-and-xcode=$(cat .github/matrix.json | jq -rc '.macos_runner_and_xcode')" >> $GITHUB_OUTPUT
-          echo "latest-macos-runner=$(cat .github/matrix.json | jq -rc '.macos_runner_and_xcode | map(.macos_runner) | max')" >> $GITHUB_OUTPUT
-          echo "latest-xcode-version=$(cat .github/matrix.json | jq -r '.macos_runner_and_xcode | map(.xcode) | max')" >> $GITHUB_OUTPUT
+          echo "versions=$(cat .github/matrix.json | jq -rc '.versions')" >> $GITHUB_OUTPUT
+          echo "latest-macos-runner=$(cat .github/matrix.json | jq -rc '.versions | map(.macos_runner) | max')" >> $GITHUB_OUTPUT
+          echo "latest-xcode-version=$(cat .github/matrix.json | jq -r '.versions | map(.xcode) | max')" >> $GITHUB_OUTPUT
           echo "swift-versions=$(cat .github/matrix.json | jq -rc '.swift_version')" >> $GITHUB_OUTPUT
-          echo "platforms=$(cat .github/matrix.json | jq -rc '.platform')" >> $GITHUB_OUTPUT
   test-macos:
     name: Test
     needs: extract-matrix
     strategy:
       matrix:
-        include: ${{ fromJson(needs.extract-matrix.outputs.macos-runner-and-xcode) }}
-        destination: ${{ fromJson(needs.extract-matrix.outputs.platforms) }}
+        include: ${{ fromJson(needs.extract-matrix.outputs.versions) }}
       fail-fast: false
     runs-on: macos-${{ matrix.macos_runner }}
     concurrency:
