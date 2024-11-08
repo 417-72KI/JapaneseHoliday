@@ -26,7 +26,7 @@ jobs:
         run: |
           echo "macos-runner-and-xcode=$(cat .github/matrix.json | jq -rc '.macos_runner_and_xcode')" >> $GITHUB_OUTPUT
           echo "latest-macos-runner=$(cat .github/matrix.json | jq -rc '.macos_runner_and_xcode | map(.macos_runner) | max')" >> $GITHUB_OUTPUT
-          echo "latest-xcode-version=$(cat .github/matrix.json | jq -r '.macos_runner_and_xcode | map(.xcode_version) | max')" >> $GITHUB_OUTPUT
+          echo "latest-xcode-version=$(cat .github/matrix.json | jq -r '.macos_runner_and_xcode | map(.xcode) | max')" >> $GITHUB_OUTPUT
           echo "swift-versions=$(cat .github/matrix.json | jq -rc '.swift_version')" >> $GITHUB_OUTPUT
           echo "platforms=$(cat .github/matrix.json | jq -rc '.platform')" >> $GITHUB_OUTPUT
   test-macos:
