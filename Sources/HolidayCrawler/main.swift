@@ -11,7 +11,7 @@ let url = URL(string: "https://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv")
 let data = try Data(contentsOf: url)
 
 // Linuxだとshift-jisが直接使えないのでiconvで変換する
-// guard let csv = String(data: data, encoding: .shiftJIS) else { 
+// guard let csv = String(data: data, encoding: .shiftJIS) else {
 //     print("Failed to convert data to string")
 //     exit(1)
 // }
@@ -43,10 +43,13 @@ let sourceDir = URL(fileURLWithPath: #filePath)
 let convertedData = try Data(contentsOf: csvFile)
 let csv = String(decoding: convertedData, as: UTF8.self)
 
-let holidays = try csv.split(separator: "\r\n").lazy.dropFirst()
+let holidays = try csv.split(separator: "\r\n").lazy
+    .dropFirst()
     .map(Holiday.init)
 let outputFile = sourceDir.appending(path: "Holidays.generated.swift")
+
 try HolidayBuilder.write(holidays, into: outputFile)
 
 let lastUpdateFile = sourceDir.appending(path: "LastUpdate.swift")
+
 try rewrite(file: lastUpdateFile, withLastUpdate: Date())
