@@ -11,3 +11,9 @@ release:
 
 crawl:
 	swift run
+
+lint:
+	swift package swiftlint --quiet | grep -v '^warning: ' || [ $$? == 1 ]
+
+format:
+	swift package swiftlint --quiet --fix | grep -v '^warning: ' || [ $$? == 1 ]
