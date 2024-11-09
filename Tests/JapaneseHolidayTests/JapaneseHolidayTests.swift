@@ -2,7 +2,11 @@ import Foundation
 import Testing
 @testable import JapaneseHoliday
 
+#if compiler(<6.0)
+@Suite
+#else
 @Suite(.serialized)
+#endif
 struct JapaneseHolidayTests {
     @Test(arguments: [
         (2024, 11, 3, "文化の日"),
