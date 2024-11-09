@@ -20,7 +20,6 @@ disabled_rules:
   - function_default_parameter_at_end
   - indentation_width
   - lower_acl_than_parent
-  - missing_docs
   - no_extension_access_modifier
   - no_grouping_extension
   - no_magic_numbers
@@ -46,7 +45,7 @@ line_length:
   ignores_comments: true
   ignores_interpolated_strings: true
 attributes:
-  always_on_same_line: 
+  always_on_same_line:
     - '@IBAction'
     - '@NSManaged'
     - '@objc'
