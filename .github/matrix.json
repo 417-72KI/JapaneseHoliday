@@ -1,17 +1,38 @@
 {
-    "xcode_version": [
-        "15.4",
-        "16.0",
-        "16.1"
+    "versions": [
+        {
+            "macos_runner": 14,
+            "xcode": "15.4",
+            "destination": [
+                "platform=macOS",
+                "platform=iOS Simulator,name=iPhone 15 Pro",
+                "platform=tvOS Simulator,name=Apple TV 4K (3rd generation)",
+                "platform=watchOS Simulator,name=Apple Watch Series 9 (45mm)"
+            ]
+        },
+        {
+            "macos_runner": 15,
+            "xcode": "16.0",
+            "destination": [
+                "platform=macOS",
+                "platform=iOS Simulator,name=iPhone 16 Pro",
+                "platform=tvOS Simulator,name=Apple TV 4K (3rd generation)",
+                "platform=watchOS Simulator,name=Apple Watch Series 10 (46mm)"
+            ]
+        },
+        {
+            "macos_runner": 15,
+            "xcode": "16.1",
+            "destination": [
+                "platform=macOS",
+                "platform=iOS Simulator,name=iPhone 16 Pro",
+                "platform=tvOS Simulator,name=Apple TV 4K (3rd generation)",
+                "platform=watchOS Simulator,name=Apple Watch Series 10 (46mm)"
+            ]
+        }
     ],
     "swift_version": [
         "5.10",
         "6.0"
-    ],
-    "platform": [
-        "platform=macOS",
-        "platform=iOS Simulator,name=iPhone 15 Pro",
-        "platform=tvOS Simulator,name=Apple TV 4K (3rd generation)",
-        "platform=watchOS Simulator,name=Apple Watch Series 9 (45mm)"
     ]
 }
