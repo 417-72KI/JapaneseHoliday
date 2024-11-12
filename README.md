@@ -12,6 +12,9 @@ It crawls [the official website of the Japanese government](https://www8.cao.go.
 
 See also https://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html
 
+> [!NOTE]
+> Date caculation is based on **Japanese Standard Time (JST)**.
+
 ## Installation
 
 Set
@@ -36,6 +39,18 @@ import JapaneseHoliday
 let holiday = JapaneseHoliday.holiday(ofDate: .now)
 
 print("Today is \(holiday?.name ?? "not a holiday")")
+```
+
+### Add a custom holiday
+
+```swift
+import JapaneseHoliday
+
+JapaneseHoliday.addCustomHoliday(forMonth: 1, day: 2, named: "三が日")
+JapaneseHoliday.addCustomHoliday(forMonth: 1, day: 3, named: "三が日")
+
+let holiday = JapaneseHoliday.holiday(ofDate: Date(timeIntervalSince1970: 1735743600)) // 2025-01-02 00:00:00 GMT+9
+print("2025-01-02 is \(holiday?.name ?? "not a holiday")")
 ```
 
 ## Author
