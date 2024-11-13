@@ -3,7 +3,7 @@
 
 import PackageDescription
 
-let isCrawling = true
+let isCrawling = false
 
 let isApplePlatform: Bool = {
     #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)

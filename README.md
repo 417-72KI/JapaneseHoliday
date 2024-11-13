@@ -20,7 +20,7 @@ See also https://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html
 Set
 
 ```swift
-.package(url: "https://github.com/417-72KI/JapaneseHoliday.git", from: "1.0.0"),
+.package(url: "https://github.com/417-72KI/JapaneseHoliday.git", from: "1.1.0"),
 ```
 
 in package dependencies and
