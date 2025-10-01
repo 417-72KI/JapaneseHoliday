@@ -2,5 +2,5 @@ import struct Foundation.Date
 
 public extension JapaneseHoliday {
     /// The last update date of the holiday data.
-    static let lastUpdate = Date(timeIntervalSince1970: 1756687744.2440715)
+    static let lastUpdate = Date(timeIntervalSince1970: 1759279482.7376032)
 }
