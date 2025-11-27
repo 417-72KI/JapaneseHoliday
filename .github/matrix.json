@@ -21,7 +21,7 @@
             ]
         },
         {
-            "macos_runner": 15,
+            "macos_runner": 26,
             "xcode": "26.1",
             "destination": [
                 "platform=macOS",
