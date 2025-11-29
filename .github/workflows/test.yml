@@ -76,8 +76,8 @@ jobs:
           path: test_output
           if-no-files-found: error
           retention-days: 1
-  xcodebuild_result:
-    name: Export xcodebuild test result
+  merge_result:
+    name: Merge xcodebuild test result
     needs: [extract-matrix, test-macos]
     runs-on: macOS-${{ needs.extract-matrix.outputs.latest-macos-runner }}
     steps:
@@ -87,13 +87,21 @@ jobs:
       - name: Merge xcresult files
         run:
           xcrun xcresulttool merge test_output/**/*.xcresult --output-path test_output/TestResults.xcresult
-      - uses: slidoapp/xcresulttool@v3.1.0
+      - uses: actions/upload-artifact@v5
         if: success() || failure()
         with:
+          name: TestResults
           path: test_output/TestResults.xcresult
-          show-passed-tests: false
-          show-code-coverage: false
-          upload-bundles: true
+      - name:
+        if: success() || failure()
+        run: |
+          RESULT=$(xcrun xcresulttool get test-results summary --path test_output/TestResults.xcresult | jq -rc .result)
+          if [ "$RESULT" != 'Passed' ]; then
+            echo "❌Some tests have failed.❌"
+            exit 1
+          else
+            echo "✅All tests have passed.✅"
+          fi
   test-linux:
     name: Test
     needs: extract-matrix
