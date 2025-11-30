@@ -12,7 +12,7 @@
         },
         {
             "macos_runner": 15,
-            "xcode": "16.0",
+            "xcode": "16.4",
             "destination": [
                 "platform=macOS",
                 "platform=iOS Simulator,name=iPhone 16 Pro",
@@ -21,18 +21,20 @@
             ]
         },
         {
-            "macos_runner": 15,
-            "xcode": "16.1",
+            "macos_runner": 26,
+            "xcode": "26.1",
             "destination": [
                 "platform=macOS",
-                "platform=iOS Simulator,name=iPhone 16 Pro",
+                "platform=iOS Simulator,name=iPhone 17 Pro",
                 "platform=tvOS Simulator,name=Apple TV 4K (3rd generation)",
-                "platform=watchOS Simulator,name=Apple Watch Series 10 (46mm)"
+                "platform=watchOS Simulator,name=Apple Watch Series 11 (46mm)"
             ]
         }
     ],
     "swift_version": [
         "5.10",
-        "6.0"
+        "6.0",
+        "6.1",
+        "6.2"
     ]
 }
