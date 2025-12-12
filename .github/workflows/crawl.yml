@@ -49,7 +49,7 @@ jobs:
         id: swift-version
         run: |
           echo "swift-version=$(cat .github/matrix.json | jq -r '.swift_version | max')" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: |
             .build/artifacts
