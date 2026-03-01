@@ -2443,5 +2443,44 @@ let Holidays: [Int: [Int: [Int: Holiday]]] = [
             3: Holiday(year: 2026, month: 11, day: 3, name: "文化の日"),
             23: Holiday(year: 2026, month: 11, day: 23, name: "勤労感謝の日")
         ]
+    ],
+    2027: [
+        1: [
+            1: Holiday(year: 2027, month: 1, day: 1, name: "元日"),
+            11: Holiday(year: 2027, month: 1, day: 11, name: "成人の日")
+        ],
+        2: [
+            11: Holiday(year: 2027, month: 2, day: 11, name: "建国記念の日"),
+            23: Holiday(year: 2027, month: 2, day: 23, name: "天皇誕生日")
+        ],
+        3: [
+            21: Holiday(year: 2027, month: 3, day: 21, name: "春分の日"),
+            22: Holiday(year: 2027, month: 3, day: 22, name: "休日")
+        ],
+        4: [
+            29: Holiday(year: 2027, month: 4, day: 29, name: "昭和の日")
+        ],
+        5: [
+            3: Holiday(year: 2027, month: 5, day: 3, name: "憲法記念日"),
+            4: Holiday(year: 2027, month: 5, day: 4, name: "みどりの日"),
+            5: Holiday(year: 2027, month: 5, day: 5, name: "こどもの日")
+        ],
+        7: [
+            19: Holiday(year: 2027, month: 7, day: 19, name: "海の日")
+        ],
+        8: [
+            11: Holiday(year: 2027, month: 8, day: 11, name: "山の日")
+        ],
+        9: [
+            20: Holiday(year: 2027, month: 9, day: 20, name: "敬老の日"),
+            23: Holiday(year: 2027, month: 9, day: 23, name: "秋分の日")
+        ],
+        10: [
+            11: Holiday(year: 2027, month: 10, day: 11, name: "スポーツの日")
+        ],
+        11: [
+            3: Holiday(year: 2027, month: 11, day: 3, name: "文化の日"),
+            23: Holiday(year: 2027, month: 11, day: 23, name: "勤労感謝の日")
+        ]
     ]
 ]
